@@ -2,6 +2,14 @@ import Vue from "vue";
 import Vuex from "vuex";
 import axios from "axios";
 
+import { productGetters, manufacturerGetters } from "./getters";
+import {
+  productMutations,
+  cartMutations,
+  manufacturerMutations,
+} from "./mutations";
+import { productActions, manufacturerActions } from "./actions";
+
 const API_BASE = "http://localhost:3000/api/v1";
 
 Vue.use(Vuex);
@@ -25,7 +33,7 @@ export default new Vuex.Store({
         image:
           "https://i.gadgets360cdn.com/large/iPhone11_leak_1567592422045.jpg",
         price: 2000,
-        manufacturer: "Apple Inc"
+        manufacturer: "Apple Inc",
       },
       {
         _id: "2",
@@ -35,7 +43,7 @@ export default new Vuex.Store({
         image:
           "https://article-fd.zol-img.com.cn/t_s640x2000/g4/M08/0E/0E/ChMlzF2myueILMN_AAGSPzoz23wAAYJ3QADttsAAZJX090.jpg",
         price: 2499,
-        manufacturer: "华为"
+        manufacturer: "华为",
       },
       {
         _id: "3",
@@ -44,7 +52,7 @@ export default new Vuex.Store({
         image:
           "http://himg2.huanqiu.com/attachment2010/2018/0129/08/39/20180129083933823.jpg",
         price: 1688,
-        manufacturer: "小米"
+        manufacturer: "小米",
       },
       {
         _id: "4",
@@ -54,7 +62,7 @@ export default new Vuex.Store({
         image:
           "https://www.tabletowo.pl/wp-content/uploads/2019/08/vivo-iqoo-pro-5g-blue-1.jpg",
         price: 4098,
-        manufacturer: "Vivo"
+        manufacturer: "Vivo",
       },
       {
         _id: "5",
@@ -64,40 +72,23 @@ export default new Vuex.Store({
         image:
           "https://news.maxabout.com/wp-content/uploads/2019/08/OPPO-Reno-2-1.jpg",
         price: 2999,
-        manufacturer: "OPPO"
-      }
+        manufacturer: "OPPO",
+      },
     ],
     // all manufacturers
-    manufacturers: []
+    manufacturers: [],
   },
   mutations: {
-    ADD_TO_CART(state, payload) {
-      const { product } = payload;
-      state.cart.push(product);
-    },
-    REMOVE_FROM_CART(state, payload) {
-      const { productId } = payload;
-      state.cart = state.cart.filter(product => product._id !== productId);
-    },
-    ALL_PRODUCTS(state) {
-      state.showLoader = true;
-    },
-    ALL_PRODUCTS_SUCCESS(state, payload) {
-      const { products } = payload;
-
-      state.showLoader = false;
-      state.products = products;
-    }
+    ...productMutations,
+    ...cartMutations,
+    ...manufacturerMutations,
+  },
+  getters: {
+    ...productGetters,
+    ...manufacturerGetters,
   },
   actions: {
-    allProducts({ commit }, payload) {
-      commit("allProducts", payload);
-      axios.get(`${API_BASE}/products`).then(response => {
-        console.log(`response`, response);
-        commit("ALL_PRODUCTS_SUCCESS", {
-          products: response.data
-        });
-      });
-    }
-  }
+    ...productActions,
+    ...manufacturerActions,
+  },
 });
