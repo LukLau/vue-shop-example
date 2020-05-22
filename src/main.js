@@ -5,12 +5,13 @@ import App from "./App";
 import { ValidationProvider } from "vee-validate";
 import router from "./router";
 import store from "./store";
-import axios from "axios";
+import ElementUI from "element-ui";
 
 const BASE_API = "localhost:3000/api/v1";
 
 Vue.config.productionTip = false;
 Vue.component("ValidationProvider", ValidationProvider);
+Vue.use(ElementUI);
 
 /* eslint-disable no-new */
 new Vue({
